@@ -16,3 +16,12 @@ export async function getPokemonDetailsByUrlApi(url) {
       return data;
     });
 }
+
+const loadPokemons = async (response) => {
+  const pokemonsArray = [];
+  console.log(results.result);
+  for await (const pokemon of response.result) {
+    console.log(pokemon);
+  }
+  //   setPokemons(pokemonsArray);
+};

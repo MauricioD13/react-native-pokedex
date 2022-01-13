@@ -1,28 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 
 import { getPokemons, getPokemonDetailsByUrlApi } from "../api/pokeapi";
+import PokemonList from "../components/PokemonList";
 
 export default function Pokedex() {
-  const [pokemos, setPokemons] = useState([]);
+  const [pokemons, setPokemons] = useState([]);
   useEffect(() => {
     (async () => {
-      const results = await getPokemons();
-      console.log(results);
+      const response = await getPokemons();
+      loadPokemons(response);
     })(); // Funcion anonimo autoejecutable
-  });
+  }, []);
 
+  // Obtener detalles y organizar los pokemones
   const loadPokemons = async (response) => {
     const pokemonsArray = [];
-    setPokemons(pokemonsArray);
-    for await (pokemon of response.result) {
-      console.log(pokemon);
+    try {
+      for await (const pokemon of response.results) {
+        const pokemonDetails = await getPokemonDetailsByUrlApi(pokemon.url);
+        pokemonsArray.push({
+          id: pokemonDetails.id,
+          name: pokemonDetails.name,
+          type: pokemonDetails.types[0].name,
+          order: pokemonDetails.order,
+          image: pokemonDetails.sprites.other["official-artwork"].front_default,
+        });
+      }
+      setPokemons([...pokemons, ...pokemonsArray]);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   return (
     <View>
-      <Text>Estamos en Pokedex</Text>
+      <PokemonList pokemons={pokemons} />
     </View>
   );
 }
