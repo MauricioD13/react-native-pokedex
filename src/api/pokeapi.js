@@ -8,3 +8,11 @@ export async function getPokemons() {
     })
     .catch((error) => console.error(error));
 }
+
+export async function getPokemonDetailsByUrlApi(url) {
+  return fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      return data;
+    });
+}
