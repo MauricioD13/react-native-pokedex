@@ -22,7 +22,7 @@ export default function Pokedex() {
         pokemonsArray.push({
           id: pokemonDetails.id,
           name: pokemonDetails.name,
-          type: pokemonDetails.types[0].name,
+          type: pokemonDetails.types[0].type.name,
           order: pokemonDetails.order,
           image: pokemonDetails.sprites.other["official-artwork"].front_default,
         });

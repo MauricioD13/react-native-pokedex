@@ -7,7 +7,6 @@ import PokemonCard from "./PokemonCard";
 
 export default function PokemonList(props) {
   const { pokemons } = props;
-  console.log(props);
   return (
     <FlatList
       data={pokemons}
