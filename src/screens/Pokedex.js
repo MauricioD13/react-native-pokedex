@@ -6,15 +6,17 @@ import PokemonList from "../components/PokemonList";
 
 export default function Pokedex() {
   const [pokemons, setPokemons] = useState([]);
+  const [nextUrl, setNextUrl] = useState(null);
   useEffect(() => {
     (async () => {
-      const response = await getPokemons();
-      loadPokemons(response);
+      loadPokemons();
     })(); // Funcion anonimo autoejecutable
   }, []);
 
   // Obtener detalles y organizar los pokemones
-  const loadPokemons = async (response) => {
+  const loadPokemons = async () => {
+    const response = await getPokemons(nextUrl);
+    setNextUrl(response.next);
     const pokemonsArray = [];
     try {
       for await (const pokemon of response.results) {
@@ -35,7 +37,11 @@ export default function Pokedex() {
 
   return (
     <View>
-      <PokemonList pokemons={pokemons} />
+      <PokemonList
+        pokemons={pokemons}
+        loadPokemons={loadPokemons}
+        isNext={nextUrl}
+      />
     </View>
   );
 }
