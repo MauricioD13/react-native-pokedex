@@ -1,7 +1,12 @@
 // Renderizar una listo de pokemones
 
 import React from "react";
-import { FlatList, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  ActivityIndicator,
+  Platform,
+} from "react-native";
 
 import PokemonCard from "./PokemonCard";
 
@@ -38,9 +43,10 @@ export default function PokemonList(props) {
 const styles = StyleSheet.create({
   flatListContentContainer: {
     paddingHorizontal: 10,
+    marginTop: Platform.OS === "android" ? 30 : 0,
   },
   spinner: {
     marginTop: 20,
-    marginBottom: 70,
+    marginBottom: Platform.OS === "android" ? 90 : 60,
   },
 });
