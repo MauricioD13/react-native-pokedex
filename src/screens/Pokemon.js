@@ -1,21 +1,52 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
-import { capitalize } from "lodash";
+import { capitalize, toUpper } from "lodash";
 import { useFonts } from "expo-font";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
+//Local imports
 import { getPokemonDetailsByIdApi } from "../api/pokeapi";
-import getColorByPokemonType from "../utils/getColorByPokemonType";
+import DetailsCard from "../components/Pokemon/DetailsCard";
+import Header from "../components/Pokemon/Header";
+import Type from "../components/Pokemon/Type";
+import Stats from "../components/Pokemon/Stats";
 
 export default function Pokemon(props) {
   const {
     navigation,
     route: { params },
   } = props;
+
+  // Fuente
   const [loaded] = useFonts({
     Cormorant: require("../assets/fonts/Cormorant-Bold.ttf"),
   });
-
   const [pokemon, setPokemon] = useState(null);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Icon
+          name="heart"
+          color="white"
+          size={20}
+          style={{ marginRight: 20 }}
+          onPress={() => console.log("Queda pendiente")}
+        />
+      ),
+      headerLeft: () => (
+        <Icon
+          name="arrow-left"
+          color="white"
+          size={20}
+          style={{ marginLeft: 20 }}
+          onPress={() => navigation.goBack()}
+        />
+      ),
+    });
+  });
+
+  // Al rederizar la screen
   useEffect(() => {
     (async () => {
       try {
@@ -29,61 +60,16 @@ export default function Pokemon(props) {
 
   if (!pokemon) return null;
 
-  const moves = [];
-
-  pokemon.moves.forEach((item) => moves.push(item.move.name));
-
-  //Background Color
-  const pokemonType = pokemon.types[0].type.name;
-  const pokemonColor = getColorByPokemonType(pokemonType);
-  const bgView = { backgroundColor: pokemonColor, ...styles.bgView };
-
-  console.log(titleCard);
-  moves;
-  pokemon.types[0].type.name;
   return (
-    <ScrollView contentContainerStyle={bgView}>
-      {/* Arreglar */}
-      <titleCard />
-      <imageCard />
-      <detailsContainer />
+    <ScrollView>
+      <Header
+        name={pokemon.name}
+        imageUrl={pokemon.sprites.other["official-artwork"].front_default}
+        order={pokemon.order}
+        pokemonType={pokemon.types[0].type.name}
+      />
+      <Type types={pokemon.types} />
+      <Stats stats={pokemon.stats} pokemonType={pokemon.types[0].type.name} />
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  bgView: {
-    width: "100%",
-    position: "absolute",
-    borderBottomEndRadius: 300,
-    borderBottomLeftRadius: 300,
-    //flex: 1,
-    padding: 10,
-    //marginTop: 10,
-    //marginBottom: 10,
-    alignItems: "center",
-  },
-  container: {
-    flexDirection: "column",
-  },
-  pokemonName: {
-    fontWeight: "bold",
-    fontFamily: "Cormorant",
-    fontSize: 30,
-  },
-  image: {
-    width: 200,
-    height: 200,
-  },
-  textContainer: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  detailsContainer: {
-    padding: 10,
-    height: 105,
-    backgroundColor: "grey",
-    borderRadius: 20,
-    marginTop: 20,
-  },
-});

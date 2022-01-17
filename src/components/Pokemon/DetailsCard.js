@@ -17,11 +17,7 @@ export default function DetailsCard(props) {
       numColumns={2}
       keyExtractor={(details) => details}
       showsVerticalScrollIndicator={false}
-      renderItem={({ item }) => (
-        <ScrollView>
-          <Text>{item}</Text>
-        </ScrollView>
-      )}
+      renderItem={({ item }) => <Text>{item}</Text>}
     />
   );
 }
