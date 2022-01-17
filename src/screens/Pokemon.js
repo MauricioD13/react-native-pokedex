@@ -6,10 +6,10 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 
 //Local imports
 import { getPokemonDetailsByIdApi } from "../api/pokeapi";
-import DetailsCard from "../components/Pokemon/DetailsCard";
 import Header from "../components/Pokemon/Header";
 import Type from "../components/Pokemon/Type";
 import Stats from "../components/Pokemon/Stats";
+import Moves from "../components/Pokemon/Moves";
 
 export default function Pokemon(props) {
   const {
@@ -17,10 +17,6 @@ export default function Pokemon(props) {
     route: { params },
   } = props;
 
-  // Fuente
-  const [loaded] = useFonts({
-    Cormorant: require("../assets/fonts/Cormorant-Bold.ttf"),
-  });
   const [pokemon, setPokemon] = useState(null);
 
   useEffect(() => {
@@ -70,6 +66,7 @@ export default function Pokemon(props) {
       />
       <Type types={pokemon.types} />
       <Stats stats={pokemon.stats} pokemonType={pokemon.types[0].type.name} />
+      <Moves moves={pokemon.moves} />
     </ScrollView>
   );
 }

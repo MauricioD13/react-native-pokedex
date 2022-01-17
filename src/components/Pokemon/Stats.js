@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     marginTop: 20,
-    marginBottom: 50,
+    marginBottom: 40,
   },
   title: {
     fontWeight: "bold",
